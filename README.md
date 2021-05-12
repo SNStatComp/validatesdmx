@@ -23,7 +23,7 @@ API](https://en.wikipedia.org/wiki/Representational_state_transfer), using a
 standardized set of parameters.  Some important SDMX registries are:
 
 - [Global SDMX Registry](https://registry.sdmx.org/): for global metadata, hosted by the SDMX consortium. The central place for ESS-wide metadata. This registry hosts important statistical metadata such as for CPI/HICP, National Accounts (NA), Environmental accounting (SEEA), BOP, GFS, FDI and many more. Unfortunately not all ESS metadata is present in this registry.
-- [Eurostat SDMX Registry](https://webgate.ec.europa.eu/sdmxregistry/): for Eurostat-wide metadata, hosted by Eurostat. This registry contains statistical metadata for all other official statistics in the ESS. [Documentation](https://ec.europa.eu/eurostat/web/sdmx-web-services/rest-sdmx-2.1)
+- [Eurostat SDMX Registry](https://webgate.ec.europa.eu/sdmxregistry/): for Eurostat-wide metadata, hosted by Eurostat. This registry contains statistical metadata for all other official statistics in the ESS. Access is offered via SDMX 2.1 REST API.
 - [IMF SDMX Central](https://sdmxcentral.imf.org/overview.html): Registry by the IMF. 
 - [UNICEF](https://sdmx.data.unicef.org/): Registry by UNICEF
 
@@ -32,13 +32,25 @@ It is also possible for organizations to create their own (internal) SDMX regist
 In addition there are several organisations that offer automated access to their dissemination database via an SDMX API, including access to the metadata:
 - [ECB](https://sdw-wsrest.ecb.europa.eu/help/): access to the ECB SDMX web services
 - [OECD](https://data.oecd.org/api/): access to OECD statistics via [SDMX-JSON](https://data.oecd.org/api/sdmx-json-documentation/) or [SDMX-ML](https://data.oecd.org/api/sdmx-ml-documentation/).
+- [Eurostat](https://ec.europa.eu/eurostat/web/sdmx-web-services/rest-sdmx-2.1): SDMX REST (2.1) API for accessing teh Eurostat dissemination database (https://ec.europa.eu/eurostat/data/database)
 - [ILO](https://www.ilo.org/sdmx/index.html): SDMX REST (2.1) API ([doc](https://www.ilo.org/ilostat-files/Documents/SDMX_User_Guide.pdf)) to [ILOstat](https://ilostat.ilo.org/) 
 - [FAO](http://api.data.fao.org/1.0/esb-rest/sdmx/introduction.html): access to data from the FAO 
 - [Worldbank](https://datahelpdesk.worldbank.org/knowledgebase/articles/1886701-sdmx-api-queries): SDMX access to World Development indicators 
 - [BIS](https://www.bis.org/statistics/sdmx_techspec.htm?accordion1=1&m=6%7C346%7C718): SDMX access to [BIS statistics](https://www.bis.org/statistics/index.htm)
 - [ISTAT](https://www.istat.it/it/metodi-e-strumenti/web-service-sdmx): access to data from the Italian statistical institute.
 
-Unfortunately the SDMX consortium does not maintain a list of active SDMX endpoints. The [rsdmx R package](https://cran.r-project.org/package=rsdmx) maintains such a list based on an earlier inventory of Data Sources. Inspecting the [endpoint links](https://github.com/opensdmx/rsdmx/wiki#success_stories) shows that some are not active or legacy. The [pandasSDMX Python package](https://pandasdmx.readthedocs.io) also maintains such a [list of data sources](https://pandasdmx.readthedocs.io/en/v1.0/sources.html). The same applies here. All in all we think that the above list pretty well summarizes the active SDMX providers.
+Unfortunately the SDMX consortium does not maintain a list of active SDMX endpoints. The [rsdmx R package](https://cran.r-project.org/package=rsdmx) maintains such a list based on an earlier inventory of Data Sources. Inspecting the [endpoint links](https://github.com/opensdmx/rsdmx/wiki#success_stories) shows that some are not active or legacy. The [pandasSDMX Python package](https://pandasdmx.readthedocs.io) also maintains such a [list of data sources](https://pandasdmx.readthedocs.io/en/v1.0/sources.html). The same applies here. All in all we think that the above lists pretty well summarizes the active SDMX providers.
+
+We explicitly categorised the SDMX endpoints above into two distinct categories:
+
+- endpoints of registries providing metadata / agreements to be used for the exchange of statistics in the European Statistical System (ESS)
+- endpoints of dissemination databases providing official statistics
+
+We recall that our goal is to re-use as internationally agreed metadata for data validation.
+With this goal in mind we conclude that the registries should be the main targets of our exercise as they form the metadata backbone of the ESS and will contain (versions) of standardised codelists and possibly other metadata relevant for data validation.
+Endpoints to dissemination databases may be interesting as well, as there is a relationship between what is published and the validity of the underlying data that we want to validate, however the first step in improving international data validation practices should be the re-use of officially agreed metadata (DSDs) in registries.
+Hence, in the rest of this exercise this is the subject of our focus.   
+
 
 
 ### Variety within standard implementations
@@ -61,17 +73,19 @@ The most important elements that we will focus on in this first implementation a
 - code list checks
 - field type and range checks
 
-Our goal is to retrieve the necessary information from the applicable registries, with a priority to the SDMX global registry and the Eurostat registry as they form the backbone of the ESS metadata 
+So our goal is to retrieve the necessary information from the applicable registries, with a priority to the SDMX global registry and the Eurostat registry as they form the backbone of the ESS metadata system. Access to other registries would be welcome. Access to dissemination database would be an optional extra. 
 
 ### Analysis of registries
 
 #### SDMX global registry
 
-Automated access to artefacts from the global regisrty is relatively simple because this registry supports many of the SDMX 2.1 resources from the standard including codelists. It is convenient that it allows these artefacts to be queried in [JSON](https://www.json.org/json-en.html) format and that this doesn't even has to be specified via content-negotiation but can be done via a *format* querystring parameter. It offers a REST [web service playing area for structures](https://registry.sdmx.org/webservice/structure.html) to design your query. Moreover this registry does answer requests fast which would make a direct connection from the validation package to the registry possible. We created an [example Python notebook](SDMX_Global_Registry/read_validation_metadata.ipynb) to show how the codelists and structures can be queried and this serves as an example to implement similar functionality in R to connect the R validate package directly with the SDMX global registry.
+Automated access to artefacts from the global registry is relatively simple because this registry supports many of the SDMX 2.1 resources from the standard including codelists. It is convenient that it not only allows these artefacts to be queried in XML but also in [JSON](https://www.json.org/json-en.html) format and that this doesn't even has to be specified via content-negotiation but can be done via a *format* querystring parameter. It offers a REST [web service playing area for structures](https://registry.sdmx.org/webservice/structure.html) to design your query. Moreover this registry does answer requests fast which would make a direct connection from the validation package to the registry possible. We created an [example Python notebook](SDMX_Global_Registry/read_validation_metadata.ipynb) to show how the codelists and structures can be queried and this serves as an example to implement similar functionality in R to connect the R validate package directly with the SDMX global registry.
 
 
 #### Eurostat SDMX registry
-For the Eurostat SDMX registry it is a different story. it does support SDMX 2.1 but it  seems not to have implemented quite a number of resource types, which are listed on the bottom of the [documentation page](https://ec.europa.eu/eurostat/web/sdmx-web-services/rest-sdmx-2.1). It is especially unfortunate that a query for a codelist has not been implemented. Also, contrary to the global registry SDMX-JSON is not implemented. To make things worse, this registry is very slow, both in user interaction as well as in API responses. This makes it difficult or even impossible to develop an direct connection between validation in R and this registry. Moreover communication with Eurostat has shown that an upgrade has not been planned and that the first improvements will probably be started only when SDMX 3.0 will be introduced. For our goals we choose not to query the Eurostat regisrty directly but instead to support reading the relevant metadata from DSDs that were downloaded beforehand.
+Automated access to artefacts from the Euro registry is also very well possible. It does support SDMX 2.1 but it seems not to have implemented SDMX-JSON.
+The registry is not as fast as the global registry, even queries to smaller metadata volumes need seconds.
+We created an [example Python notebook](ESTAT_SDMX_Registry/read_validation_metadata.ipynb) to show how the codelists and structures can be queried and this serves as an example to implement similar functionality in R to connect the R validate package directly with the SDMX global registry.
 
 
 #### Other registries
@@ -79,12 +93,18 @@ The [IMF SDMX Central](https://sdmxcentral.imf.org/overview.html) seems to offer
 
 The same holds for the [UNICEF registry](https://sdmx.data.unicef.org/overview.html). It is clearly based on the same regisrty software and thus our automated connection will work for the contents contained in this registry as well. Moreover it offers additional international metadata which again widens the effectiveness of such generic solution.
 
+All in all, our analysis shows that three out of the 4 registries that we found can be accessed via SDMX-JSON and one - the Euro registry - cannot (at the moment.)
+Because of the importance of the Euro registry for the ESS and international data validation and since we opt for a generic approach where we implement one type of access to be used on as many endpoints as possible, we decide that for the moment we have to query SDMX 2.1 for XML from R.
+Since the Euro registry does have some delay and datavalidation ractices require immediate access to rules and rule metadata, we will design our datavalidation approach in R using an automated cache. 
 
+#### Overlap in content
+Looking at the contents of the 4 registres we see that they show some overlap.
+Especially the global regisrty and the SDMX regisrty ..... <TODO: overlap analysis  >
 
 
 ### Design
 
-**This has to be rewritten after implementing**
+**This has to be rewritten later**
 
 As we have seen, it is not possible to create a generic client that works
 out-of-the-box for every registry. Any client that accesses multiple SDMX registries
