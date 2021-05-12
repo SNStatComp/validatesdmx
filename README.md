@@ -27,12 +27,12 @@ standardized set of parameters.  Some important SDMX registries are:
 - [IMF SDMX Central](https://sdmxcentral.imf.org/overview.html): Registry by the IMF. 
 - [UNICEF](https://sdmx.data.unicef.org/): Registry by UNICEF
 
-It is also possible for organizations to create their own (internal) SDMX registry. For the goal of reusing international metadata for data validation this is less of our interest as we cannot access these.
+It is also possible for organizations to create their own (internal) SDMX registry. For the goal of re-using international metadata for data validation this is less of our interest.
 
 In addition there are several organisations that offer automated access to their dissemination database via an SDMX API, including access to the metadata:
 - [ECB](https://sdw-wsrest.ecb.europa.eu/help/): access to the ECB SDMX web services
 - [OECD](https://data.oecd.org/api/): access to OECD statistics via [SDMX-JSON](https://data.oecd.org/api/sdmx-json-documentation/) or [SDMX-ML](https://data.oecd.org/api/sdmx-ml-documentation/).
-- [Eurostat](https://ec.europa.eu/eurostat/web/sdmx-web-services/rest-sdmx-2.1): SDMX REST (2.1) API for accessing teh Eurostat dissemination database (https://ec.europa.eu/eurostat/data/database)
+- [Eurostat](https://ec.europa.eu/eurostat/web/sdmx-web-services/rest-sdmx-2.1): SDMX REST (2.1) API for accessing the Eurostat dissemination database (https://ec.europa.eu/eurostat/data/database)
 - [ILO](https://www.ilo.org/sdmx/index.html): SDMX REST (2.1) API ([doc](https://www.ilo.org/ilostat-files/Documents/SDMX_User_Guide.pdf)) to [ILOstat](https://ilostat.ilo.org/) 
 - [FAO](http://api.data.fao.org/1.0/esb-rest/sdmx/introduction.html): access to data from the FAO 
 - [Worldbank](https://datahelpdesk.worldbank.org/knowledgebase/articles/1886701-sdmx-api-queries): SDMX access to World Development indicators 
@@ -43,10 +43,10 @@ Unfortunately the SDMX consortium does not maintain a list of active SDMX endpoi
 
 We explicitly categorised the SDMX endpoints above into two distinct categories:
 
-- endpoints of registries providing metadata / agreements to be used for the exchange of statistics in the European Statistical System (ESS)
+- endpoints of registries providing metadata for the exchange of statistics in the European Statistical System (ESS)
 - endpoints of dissemination databases providing official statistics
 
-We recall that our goal is to re-use as internationally agreed metadata for data validation.
+We recall that our goal is to re-use internationally agreed metadata for data validation.
 With this goal in mind we conclude that the registries should be the main targets of our exercise as they form the metadata backbone of the ESS and will contain (versions) of standardised codelists and possibly other metadata relevant for data validation.
 Endpoints to dissemination databases may be interesting as well, as there is a relationship between what is published and the validity of the underlying data that we want to validate, however the first step in improving international data validation practices should be the re-use of officially agreed metadata (DSDs) in registries.
 Hence, in the rest of this exercise this is the subject of our focus.   
