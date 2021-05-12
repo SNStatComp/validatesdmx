@@ -12,10 +12,10 @@ validation. The aim of this package is to make it easier to use [SDMX](https://s
 ### SDMX landscape
 
 The Statistical Data and Metadata eXchange ([SDMX](https://sdmx.org)) standard is an ISO standard designed to facilitate the exchange or dissemination of [Official Statistics](https://en.wikipedia.org/wiki/Official_statistics#:~:text=Official%20statistics%20are%20statistics%20published,organizations%20as%20a%20public%20good.).
-At the core it has a logical informational model describing the key characteristics of statistical data and metadata, which can be applied to any statistical domain.
-Various data formats have been defined based on this information model, such as SDMX-[CSV](https://tools.ietf.org/html/rfc4180), SDMX-[JSON](https://www.json.org/json-en.html) format), and - by far the most widely known - SDMX-ML (data in [XML](https://www.w3.org/XML/)).
-A key aspect of the SDMS standard is that one defines the metadata, including data structure, variables, and code lists beforehand in order to describe what data is shared or published.
-This metadata is defined in an *SDMX registry* where data producers can download or query the necessary metadata. Alternatively metadata is distributed in a so-called *Data Structure Definition* file, which is usually an XML format.
+At the core it has a logical information model describing the key characteristics of statistical data and metadata, which can be applied to any statistical domain.
+Various data formats have been defined based on this information model, such as SDMX-[CSV](https://tools.ietf.org/html/rfc4180), SDMX-[JSON](https://www.json.org/json-en.html)), and - by far the most widely known - SDMX-ML (data in [XML](https://www.w3.org/XML/)).
+A key aspect of the SDMX standard is that one defines the metadata, including data structure, variables, and code lists beforehand in order to describe what data is shared or published.
+This metadata is defined in an *SDMX registry* where data producers can download or query the necessary metadata. Alternatively metadata is distributed in a so-called *Data Structure Definition* (DSD) file, which is usually an XML format.
 Both types of modes should result in exactly the same metadata agreements. 
 
 SDMX registries can be accessed through a [REST
