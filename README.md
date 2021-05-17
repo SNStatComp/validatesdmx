@@ -97,39 +97,19 @@ All in all, our analysis shows that three out of the 4 registries that we found 
 Because of the importance of the Euro registry for the ESS and international data validation and since we opt for a generic approach where we implement one type of access to be used on as many endpoints as possible, we decide that for the moment we have to query SDMX 2.1 for XML from R.
 Since the Euro registry does have some delay and datavalidation ractices require immediate access to rules and rule metadata, we will design our datavalidation approach in R using an automated cache. 
 
-#### Overlap in content
+#### Overlap analysis
 Looking at the contents of the 4 registres we see that they show some overlap.
-Especially the global regisrty and the SDMX regisrty ..... <TODO: overlap analysis  >
+Especially the global registry and the SDMX registry seems to overlap in contents from ESTAT.
+However each of the registries does offer organisation-specific metadata that is not contained in any of the other registries which makes the use case for the generic validatesdmx package valid.  
 
 
 ### Design
 
-**This has to be rewritten later**
-
-As we have seen, it is not possible to create a generic client that works
-out-of-the-box for every registry. Any client that accesses multiple SDMX registries
-either needs to store API-specific information or make this user-configurable.
-
-Considering the differences in APIs, there are two sources of variability
-in API.
-
-1. The order and naming of parameters and their values.
-2. The extent to which the API fully covers functionality described in the standard.
-
-
-**Ad 1.** This can be solved by creating maps between the different
-representations of parameters.
-
-**Ad 2.** This can be solved by creating a fall-back scenario where in stead
-of asking the API to query a DSD, we download the whole DSD and extract the
-information ourselves. Extra assumptions will probably be necessary.
-
-
-As starting point for the 'generic' client the structural metadata part of the 
+To create a generic client that works out-of-the-box for every registry we have seen that we have to use the SDMX-ML response.
+The example R scripts show that the use of the generic rsdmx package for parsing SDMX-ML responses results in similar S4 objects for both registries tested and presumably all registries since the other two are based on the same backend as the global registry.
+Happily this conforms to the  
 [SDMX API cheet sheet](https://raw.githubusercontent.com/sdmx-twg/sdmx-rest/master/v2_1/ws/rest/docs/rest_cheat_sheet.pdf) 
-will be used.
-
-### Design
+as fas as we can see.
 
 From a user-perspective it is important to have an interface that 
 
@@ -150,11 +130,6 @@ We therefore propose a reference class which looks roughly like this.
 Where all methods that ask an API to extract information from a DSD possibly
 need API-specific fallback scenarios for incomplete APIs.
 
-
-
-
-
-
-
-
+Also, since not all registries are blazing fast we plan to add some caching in metadata requests.
+This will be the subject of further experimentation work to be carried out in the comoing period.
 
