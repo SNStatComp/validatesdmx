@@ -79,13 +79,13 @@ So our goal is to retrieve the necessary information from the applicable registr
 
 #### SDMX global registry
 
-Automated access to artefacts from the global registry is relatively simple because this registry supports many of the SDMX 2.1 resources from the standard including codelists. It is convenient that it not only allows these artefacts to be queried in XML but also in [JSON](https://www.json.org/json-en.html) format and that this doesn't even has to be specified via content-negotiation but can be done via a *format* querystring parameter. It offers a REST [web service playing area for structures](https://registry.sdmx.org/webservice/structure.html) to design your query. Moreover this registry does answer requests fast which would make a direct connection from the validation package to the registry possible. We created an [example Python notebook](SDMX_Global_Registry/read_validation_metadata.ipynb) to show how the codelists and structures can be queried and this serves as an example to implement similar functionality in R to connect the R validate package directly with the SDMX global registry.
+Automated access to artefacts from the global registry is relatively simple because this registry supports many of the SDMX 2.1 resources from the standard including codelists. It is convenient that it not only allows these artefacts to be queried in XML but also in [JSON](https://www.json.org/json-en.html) format and that this doesn't even has to be specified via content-negotiation but can be done via a *format* querystring parameter. It offers a REST [web service playing area for structures](https://registry.sdmx.org/webservice/structure.html) to design your query. Moreover this registry does answer requests fast which would make a direct connection from the validation package to the registry possible. We created a [Python notebook](test_registries/Python/global_registry.ipynb) and an [R script](test_registries/R/global_registry.R)to show how the codelists and structures can be queried and this serves as an example to implement the needed functionality in this R validate package.
 
 
 #### Eurostat SDMX registry
 Automated access to artefacts from the Euro registry is also very well possible. It does support SDMX 2.1 but it seems not to have implemented SDMX-JSON.
 The registry is not as fast as the global registry, even queries to smaller metadata volumes need seconds.
-We created an [example Python notebook](ESTAT_SDMX_Registry/read_validation_metadata.ipynb) to show how the codelists and structures can be queried and this serves as an example to implement similar functionality in R to connect the R validate package directly with the SDMX global registry.
+We created  a [Python notebook](test_registries/Python/euro_registry.ipynb) and an [R script](test_registries/R/euro_registry.R) to show how the codelists and structures can be queried and this serves as an example to implement the needed functionality in this R validate package.
 
 
 #### Other registries
