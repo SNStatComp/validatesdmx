@@ -1,12 +1,16 @@
 Package: validatesdmx
 Type: Package
 Title: Data validation based on SDMX metadata
-Version: 0.0.1
-Author: Mark van der Loo
+Version: 0.0.3
+Authors@R: c(person("Mark", "van der Loo"
+                   , role   = c("cre","aut")
+                   , email  = "mark.vanderloo@gmail.com"
+                   , comment= c(ORCID="0000-0002-9807-4686"))
+           , person("Olav", "ten Bosch", role="aut"))
 Maintainer: Mark van der Loo <mark.vanderloo@gmail.com>
 Description: Statistical Data and Metadata eXange (SDMX) is an XML based data exchange
              format. 
 License: GPL (>= 3)
-Depends: validate
-Suggests: tinytest
+Imports: rsdmx
+Suggests: validate, tinytest
 RoxygenNote: 7.1.1
