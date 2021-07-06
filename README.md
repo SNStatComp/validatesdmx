@@ -1,12 +1,10 @@
-## validatesdmx
+## Introduction
 
-Data validation using SDMX metadata.
+This repo contains project results from the international **ValidatFOSS2** project: *Validation with Free and Open Source Software*, supported by the EU under Grant Agreement 882817 - 2019-NL-Validation.
 
-This R package extends the
-[validate](https://cran.r-project.org/package=validate) package for data
-validation. The aim of this package is to make it easier to use [SDMX](https://sdmx.org/) metadata, such as code list or field types or field limits with the validate package.
+This repo specifically addresses the issue of performing data validation from R using the [validate](https://cran.r-project.org/package=validate) extended with facilities to hande SDMX metadata. The aim of this work is to make it easier to use [SDMX](https://sdmx.org/) metadata, such as code list or field types or field limits from within the validate package. 
 
-> The aim of `validatesdmx` is to make it possible to re-use internationally-agreed SDMX metadata, specified in SDMX registries or local DSD files, for data validation.
+> The aim of this work is to make it possible to re-use internationally-agreed SDMX metadata, specified in SDMX registries or local DSD files, for data validation.
 
 
 ### SDMX landscape
@@ -100,36 +98,29 @@ Since the Euro registry does have some delay and datavalidation ractices require
 #### Overlap analysis
 Looking at the contents of the 4 registres we see that they show some overlap.
 Especially the global registry and the SDMX registry seems to overlap in contents from ESTAT.
-However each of the registries does offer organisation-specific metadata that is not contained in any of the other registries which makes the use case for the generic validatesdmx package valid.  
+However each of the registries does offer organisation-specific metadata that is not contained in any of the other registries which makes the use case for the generic validatesdmx package valid.
+We plan to do an overlap analysis later.
 
 
 ### Design
 
-To create a generic client that works out-of-the-box for every registry we have seen that we have to use the SDMX-ML response.
-The example R scripts show that the use of the generic rsdmx package for parsing SDMX-ML responses results in similar S4 objects for both registries tested and presumably all registries since the other two are based on the same backend as the global registry.
+As mentioned in the introduction the aim of this work is to facilitate data validation based on Internationally agreed metadata as specified in SDMX from the R validate package. The above analyses show that to create a generic client that works out-of-the-box for every registry we have to use  the SDMX 2.1 REST API.
+This is shown in the example R scripts in this registry. They also show that the use of the generic rsdmx package for parsing SDMX-ML responses results in similar S4 objects for both registries tested and presumably all registries since the other two are based on the same backend as the global registry.
 Happily this conforms to the  
 [SDMX API cheet sheet](https://raw.githubusercontent.com/sdmx-twg/sdmx-rest/master/v2_1/ws/rest/docs/rest_cheat_sheet.pdf) 
 as fas as we can see.
 
 From a user-perspective it is important to have an interface that 
 
-a. hides details that are related to a specific SDMX DSD API
-b. is extensible so that new APIs may be added.
-c. has speedy performance and avoids unnecessary downloads
+- hides details that are related to a specific SDMX DSD API
+- is extensible so that new APIs may be added.
+- has speedy performance and avoids unnecessary downloads
 
-We therefore propose a reference class which looks roughly like this.
+We therefore decided to implement the generic connection to a SDMX registry using the  [rsdmx](https://cran.r-project.org/package=rsdmx) package and to hide the details as much as possible from the end-user in the validate package, so that there is one interface / documentation / cookbook that describes it all. Also, since not all registries are blazing fast we plan to add some **caching** in metadata requests in the R-validate implementation.
 
-```
-  class:   SDMXAPI
-  private: 
-     - API dependent information, such as base URL.
-     - session information, downloaded data.
-  public:
-     - methods for getting DSD, code lists, etc.
-```
-Where all methods that ask an API to extract information from a DSD possibly
-need API-specific fallback scenarios for incomplete APIs.
+The results of these design decisions will be avilable in:
+ - a new version of the R package validate
+ - an extension of the corresponding data validation cookbook with a chapter on how to us registry metadata from R-validate
+  - a dedicated vignette on the R-validate SDMX functionality.
 
-Also, since not all registries are blazing fast we plan to add some caching in metadata requests.
-This will be the subject of further experimentation work to be carried out in the comoing period.
-
+When available, links to these three outputs will be posted here as well. 
