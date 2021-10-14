@@ -2,7 +2,7 @@
 
 This repo contains project results from the international **ValidatFOSS2** project: *Validation with Free and Open Source Software*, supported by the EU under Grant Agreement 882817 - 2019-NL-Validation.
 
-This repo specifically addresses the issue of performing data validation from R using the [validate](https://cran.r-project.org/package=validate) extended with facilities to hande SDMX metadata. The aim of this work is to make it easier to use [SDMX](https://sdmx.org/) metadata, such as code list or field types or field limits from within the validate package. 
+This repo specifically addresses the issue of performing data validation from R using the [validate](https://cran.r-project.org/package=validate) extended with facilities to handle SDMX metadata. The aim of this work is to make it easier to use [SDMX](https://sdmx.org/) metadata, such as code list or field types or field limits from within the validate package. 
 
 > The aim of this work is to make it possible to re-use internationally-agreed SDMX metadata, specified in SDMX registries or local DSD files, for data validation.
 
@@ -95,11 +95,18 @@ All in all, our analysis shows that three out of the 4 registries that we found 
 Because of the importance of the Euro registry for the ESS and international data validation and since we opt for a generic approach where we implement one type of access to be used on as many endpoints as possible, we decide that for the moment we have to query SDMX 2.1 for XML from R.
 Since the Euro registry does have some delay and datavalidation ractices require immediate access to rules and rule metadata, we will design our datavalidation approach in R using an automated cache. 
 
-#### Overlap analysis
+#### Content analysis
 Looking at the contents of the 4 registres we see that they show some overlap.
 Especially the global registry and the SDMX registry seems to overlap in contents from ESTAT.
 However each of the registries does offer organisation-specific metadata that is not contained in any of the other registries which makes the use case for the generic validatesdmx package valid.
-We plan to do an overlap analysis later.
+
+It seems logical to look at some stage into the contents of the various registries as well. This work creates some interesting questions such as:
+
+- is there content overlap among registries?
+- are the contents of these registries consistent and complete? 
+- does a statistician know where to look for which content in this international multi-registry landscape?
+
+Formulating an answer to these questions is beyond the validatFOSS2 project. It could be examined in a follow-up project, possibly also taking into consideration the interplay with national / internal metadata regisrties.
 
 
 ### Design
@@ -116,11 +123,14 @@ From a user-perspective it is important to have an interface that
 - is extensible so that new APIs may be added.
 - has speedy performance and avoids unnecessary downloads
 
-We therefore decided to implement the generic connection to a SDMX registry using the  [rsdmx](https://cran.r-project.org/package=rsdmx) package and to hide the details as much as possible from the end-user in the validate package, so that there is one interface / documentation / cookbook that describes it all. Also, since not all registries are blazing fast we plan to add some **caching** in metadata requests in the R-validate implementation.
+We therefore decided to implement the generic connection to a SDMX registry using the  [rsdmx](https://cran.r-project.org/package=rsdmx) package and to hide the details as much as possible from the end-user in the validate package, so that there is one interface / documentation / cookbook that describes it all. Also, since not all registries are blazing fast we added  **caching** within sessions within metadata requests in the R-validate implementation.
 
-The results of these design decisions will be avilable in:
- - a new version of the R package validate
- - an extension of the corresponding data validation cookbook with a chapter on how to us registry metadata from R-validate
-  - a dedicated vignette on the R-validate SDMX functionality.
+The results of these design decisions are available in version 1.1.0 of the R-validate package and the corresponding documentation / tutorials released. They can be found here:
 
-When available, links to these three outputs will be posted here as well. 
+- a new version of the [R package validate](https://cran.r-project.org/package=validate)
+- a new version of the [Data Validation Cookbook](https://data-cleaning.github.io/validate/)
+- the cookbook as a [vignette](https://cran.r-project.org/web/packages/validate/vignettes/cookbook.html) in the documentation of the R-validate package.
+
+For completeness mention here that, in addition to the work on connecting to SDMX, new constructs have been added to R-validate to support the Eurostat main types of rules. These new constructs were added in version 1.0.0 of the package and can be viewed in the [NEWS](https://cran.r-project.org/web/packages/validate/NEWS) file. A mapping of these constructs to the main types of rules has been described in more detail in the final report of the validatFOSS2 project.
+
+Finally we mention that another R-package in the data cleaning ecosystem has been released that offers special support for working on  large datasets contained in a SQL databases. This the R-package [validatedb](https://cran.r-project.org/package=validatedb). For more information we refer to the documentation.
